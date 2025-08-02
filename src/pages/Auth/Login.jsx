@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import AuthInput from "../../components/layouts/auth/AuthInput";
 import { validateEmail } from "../../utils/helper";
@@ -11,15 +11,13 @@ import { useUserContext } from "../../context/UserContext";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { updateUser } = useUserContext();
+  const { updateUser, navigate } = useUserContext();
 
   const formData = {
     email: useRef(""),
     password: useRef(""),
   };
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();

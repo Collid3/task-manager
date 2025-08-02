@@ -8,7 +8,7 @@ const api = axios.create({
 // Request Interceptor
 api.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("token");
+    const accessToken = localStorage.getItem("task-manager-token");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

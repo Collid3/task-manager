@@ -15,10 +15,10 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (me) return;
 
-    const accessToken = localStorage.getItem("token");
+    const accessToken = localStorage.getItem("task-manager-token");
     if (!accessToken) {
       setLoading(false);
-      return navigate("/");
+      return navigate("/login");
     }
 
     const fetchUser = async () => {
@@ -40,16 +40,16 @@ export const UserProvider = ({ children }) => {
 
   const updateUser = (userData) => {
     setMe(userData);
-    localStorage.setItem("token", userData.token);
+    localStorage.setItem("task-manager-token", userData.token);
     setLoading(false);
   };
 
   const clearUser = () => {
     setMe(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("task-manager-token");
   };
 
-  const value = { me, loading, updateUser, clearUser };
+  const value = { me, loading, updateUser, clearUser, navigate };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 

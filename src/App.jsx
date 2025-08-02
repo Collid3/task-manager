@@ -8,9 +8,9 @@ import ManageTasks from "./Admin/pages/ManageTasks";
 import CreateTask from "./Admin/pages/CreateTask";
 import ManageUsers from "./Admin/pages/ManageUsers";
 
-import UserDashboard from "./pages/User/UserDashboard";
-import UserTasks from "./pages/User/UserTasks";
-import UserTask from "./pages/User/UserTask";
+import UserDashboard from "./Admin/User/UserDashboard";
+import UserTasks from "./Admin/User/UserTasks";
+import UserTask from "./Admin/User/UserTask";
 import { Toaster } from "react-hot-toast";
 import { useUserContext } from "./context/UserContext";
 

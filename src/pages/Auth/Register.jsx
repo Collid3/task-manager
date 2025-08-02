@@ -59,7 +59,7 @@ const Register = () => {
         const { user } = data;
 
         toast.success("Resgistered successfully");
-        localStorage.setItem("token", user.token);
+        localStorage.setItem("task-manager-token", user.token);
         if (user.role === "admin") {
           navigate("/admin/dashboard");
         } else {
