@@ -9,6 +9,7 @@ import { useState } from "react";
 import { PRIORITY_DATA } from "../../utils/data";
 import SelectDropDown from "../components/SelectDropDown";
 import SelectUsers from "../components/SelectUsers";
+import TodoListInput from "../components/TodoListInput";
 
 const CreateTask = () => {
   useUserAuth();
@@ -118,7 +119,7 @@ const CreateTask = () => {
                 />
               </div>
 
-              <div className="col-span-6 md:col-span-4 mt-3">
+              <div className="col-span-6 md:col-span-4">
                 <label className="text-xs font-medium text-slate-600">
                   Due Date
                 </label>
@@ -133,17 +134,41 @@ const CreateTask = () => {
                   }
                 />
               </div>
+
+              <div className="col-span-12 md:col-span-3">
+                <label className="text-xs font-medium text-slate-600">
+                  Assign To
+                </label>
+
+                <SelectUsers
+                  selectedUsers={taskData.assignedTo}
+                  setSelectedUsers={(value) =>
+                    handleValueChange("assignedTo", value)
+                  }
+                />
+              </div>
             </div>
 
-            <div className="col-span-12 md:col-span-3">
-              <label className="text-xs font-medium text-slate-600">
-                Assign To
+            <div className="mt-3">
+              <label className="text-xs font font-medium text-slate-600">
+                TODO Checklist
               </label>
 
-              <SelectUsers
-                selectedUsers={taskData.assignedTo}
-                setSelectedUsers={(value) =>
-                  handleValueChange("assignedTo", value)
+              <TodoListInput
+                todoList={taskData.todoChecklist}
+                setTodoList={(value) =>
+                  handleValueChange("todoChecklist", value)
+                }
+              />
+            </div>
+
+            <div className="mt-3">
+              <label className="">Add Attachments</label>
+
+              <AddAttachmentsInput
+                attachments={taskData.attachments}
+                setAttachments={(value) =>
+                  handleValueChange("attachments", value)
                 }
               />
             </div>
