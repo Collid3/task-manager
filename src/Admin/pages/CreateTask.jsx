@@ -10,6 +10,9 @@ import { PRIORITY_DATA } from "../../utils/data";
 import SelectDropDown from "../components/SelectDropDown";
 import SelectUsers from "../components/SelectUsers";
 import TodoListInput from "../components/TodoListInput";
+import AddAttachmentsInput from "../components/AddAttachmentsInput";
+import api from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const CreateTask = () => {
   useUserAuth();
@@ -17,6 +20,7 @@ const CreateTask = () => {
   const { me, navigate } = useUserContext();
 
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -46,9 +50,58 @@ const CreateTask = () => {
     });
   };
 
-  const createTask = async () => {};
+  const createTask = async () => {
+    setLoading(true);
+
+    try {
+      const todoList = taskData.todoChecklist.map((todo) => ({
+        text: todo,
+        completed: false,
+      }));
+
+      const { data } = await api.post(API_PATHS.TASKS.CREATE_TASK, {
+        ...taskData,
+        dueDate: new Date(taskData.dueDate).toISOString(),
+        todoChecklist: todoList,
+      });
+
+      toast.success(data.message);
+
+      clearData();
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateTask = async () => {};
+
+  const handleSubmit = async () => {
+    // input validation
+    if (!taskData.title.trim()) {
+      return toast.error("Title is required");
+    }
+    if (!taskData.description.trim()) {
+      return toast.error("Description is required");
+    }
+    if (!taskData.dueDate) {
+      return toast.error("Due date is required");
+    }
+    if (taskData.assignedTo.length === 0) {
+      return toast.error("Task not assigned to any member");
+    }
+    if (taskData.todoChecklist.length === 0) {
+      return toast.error("Add atleast one todo task");
+    }
+
+    if (taskId) {
+      updateTask();
+      return;
+    }
+
+    createTask();
+  };
 
   const getTaskDetailsByID = async () => {};
 
@@ -172,6 +225,10 @@ const CreateTask = () => {
                 }
               />
             </div>
+
+            <button className="add-btn outline-none" onClick={handleSubmit}>
+              {taskId ? "UPDATE TASK" : "CREATE TASK"}
+            </button>
           </div>
         </div>
       </div>
