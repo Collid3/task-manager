@@ -176,7 +176,10 @@ const CreateTask = () => {
     } else clearData();
 
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskId]);
+
+  console.log(taskData);
 
   return (
     <DashboardLayout activeMenu="Create Task">

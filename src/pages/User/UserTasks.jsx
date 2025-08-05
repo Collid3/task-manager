@@ -44,7 +44,7 @@ const UserTasks = () => {
   };
 
   const handleClick = (taskId) => {
-    navigate(`/admin/create-task/${taskId}`);
+    navigate(`/user/tasks/${taskId}`);
   };
 
   useEffect(() => {
