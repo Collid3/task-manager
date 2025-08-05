@@ -21,7 +21,7 @@ const CreateTask = () => {
 
   const [currentTask, setCurrentTask] = useState(null);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -41,7 +41,7 @@ const CreateTask = () => {
   };
 
   const clearData = () => {
-    setTaskData((prev) => ({
+    setTaskData({
       title: "",
       description: "",
       priority: "Low",
@@ -49,11 +49,11 @@ const CreateTask = () => {
       assignedTo: [],
       todoChecklist: [],
       attachments: [],
-    }));
+    });
   };
 
   const createTask = async () => {
-    setLoading(true);
+    setLoading("Creating task...");
 
     try {
       const todoList = taskData.todoChecklist.map((todo) => ({
@@ -73,12 +73,12 @@ const CreateTask = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   const updateTask = async () => {
-    setLoading(true);
+    setLoading("Updating task...");
 
     try {
       const todoList = taskData.todoChecklist?.map((todo) => {
@@ -103,7 +103,7 @@ const CreateTask = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -134,8 +134,6 @@ const CreateTask = () => {
   };
 
   const getTaskDetailsByID = async () => {
-    setLoading(true);
-
     try {
       const { data } = await api.get(API_PATHS.TASKS.GET_TASK_BY_ID(taskId));
       const task = data.task;
@@ -154,13 +152,11 @@ const CreateTask = () => {
       });
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
   const deleteTask = async () => {
-    setLoading(true);
+    setLoading("Deleting task...");
 
     try {
       const { data } = await api.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
@@ -170,7 +166,7 @@ const CreateTask = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -306,7 +302,7 @@ const CreateTask = () => {
             </div>
 
             <button className="add-btn outline-none" onClick={handleSubmit}>
-              {taskId ? "UPDATE TASK" : "CREATE TASK"}
+              {loading ? loading : taskId ? "UPDATE TASK" : "CREATE TASK"}
             </button>
           </div>
         </div>
@@ -320,6 +316,7 @@ const CreateTask = () => {
         <DeleteAlert
           content="Are you sure you want to delete this task?"
           onDelete={deleteTask}
+          loading={loading}
         />
       </Modal>
     </DashboardLayout>
