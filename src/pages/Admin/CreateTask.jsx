@@ -6,15 +6,15 @@ import { LuTrash2 } from "react-icons/lu";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { PRIORITY_DATA } from "../../utils/data";
-import SelectDropDown from "../components/Create-Task/SelectDropDown";
-import SelectUsers from "../components/Create-Task/SelectUsers";
-import TodoListInput from "../components/Create-Task/TodoListInput";
-import AddAttachmentsInput from "../components/Create-Task/AddAttachmentsInput";
+import SelectDropDown from "../../components/Create-Task/SelectDropDown";
+import SelectUsers from "../../components/Create-Task/SelectUsers";
+import TodoListInput from "../../components/Create-Task/TodoListInput";
+import AddAttachmentsInput from "../../components/Create-Task/AddAttachmentsInput";
 import api from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import moment from "moment";
-import Modal from "../components/Create-Task/Modal";
-import DeleteAlert from "../components/DeleteAlert";
+import Modal from "../../components/Create-Task/Modal";
+import DeleteAlert from "../../components/DeleteAlert";
 
 const CreateTask = () => {
   useUserAuth();

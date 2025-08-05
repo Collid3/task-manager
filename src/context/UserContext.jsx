@@ -45,6 +45,8 @@ export const UserProvider = ({ children }) => {
   };
 
   const clearUser = () => {
+    console.log("here");
+
     setMe(null);
     localStorage.removeItem("task-manager-token");
   };

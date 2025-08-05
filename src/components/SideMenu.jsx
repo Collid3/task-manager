@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import { SIDE_MENU_DATA, SIDE_MENU_USER_DATA } from "../utils/data";
 
+import emptyAvatar from "../assets/images/Empty-avatar.png";
+
 const SideMenu = ({ activeMenu }) => {
   const { me, clearUser, navigate } = useUserContext();
   const [SideMenuData, setSideMenuData] = useState([]);
 
   const handleClick = (route) => {
-    if (route === "logout") {
+    if (route === "/logout") {
       handleLogout();
       return;
     }
@@ -35,7 +37,7 @@ const SideMenu = ({ activeMenu }) => {
       <div className="flex flex-col items-center justify-center mb-7 pt-5">
         <div className="relative">
           <img
-            src={me?.image || ""}
+            src={me?.image || emptyAvatar}
             alt="profile picture"
             className="w-20 h-20 rounded-full bg-slate-400"
           />

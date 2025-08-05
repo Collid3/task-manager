@@ -8,8 +8,11 @@ import AuthInput from "../../components/layouts/auth/AuthInput";
 import toast from "react-hot-toast";
 import api from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { useUserContext } from "../../context/UserContext";
 
 const Register = () => {
+  const { updateUser } = useUserContext();
+
   const [profilePicture, setProfilePicture] = useState("");
   const inputData = {
     fullName: useRef(""),
@@ -59,7 +62,8 @@ const Register = () => {
         const { user } = data;
 
         toast.success("Resgistered successfully");
-        localStorage.setItem("task-manager-token", user.token);
+        updateUser(user);
+
         if (user.role === "admin") {
           navigate("/admin/dashboard");
         } else {

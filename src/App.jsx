@@ -3,14 +3,15 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import PrivateRoute from "./routes/PrivateRoute";
 
-import Dashboard from "./Admin/pages/Dashboard";
-import ManageTasks from "./Admin/pages/ManageTasks";
-import CreateTask from "./Admin/pages/CreateTask";
-import ManageUsers from "./Admin/pages/ManageUsers";
+import Dashboard from "./pages/Admin/Dashboard";
+import ManageTasks from "./pages/Admin/ManageTasks";
+import CreateTask from "./pages/Admin/CreateTask";
+import ManageUsers from "./pages/Admin/ManageUsers";
 
-import UserDashboard from "./Admin/User/UserDashboard";
-import UserTasks from "./Admin/User/UserTasks";
-import UserTask from "./Admin/User/UserTask";
+import UserDashboard from "./pages/User/UserDashboard";
+import UserTasks from "./pages/User/UserTasks";
+import UserTask from "./pages/User/UserTask";
+
 import { Toaster } from "react-hot-toast";
 import { useUserContext } from "./context/UserContext";
 

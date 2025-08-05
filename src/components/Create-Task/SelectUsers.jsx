@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import api from "../../../utils/axiosInstance";
-import { API_PATHS } from "../../../utils/apiPaths";
+import api from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { LuUsers } from "react-icons/lu";
 import Modal from "./Modal";
 import AvatarGroup from "./AvatarGroup";
+import emptyAvatar from "../../assets/images/Empty-avatar.png";
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
   const [allUsers, setAllUsers] = useState([]);
@@ -46,6 +47,8 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
   useEffect(() => {
     if (selectedUsers.length === 0) {
       setTempSelectedUsers([]);
+    } else {
+      setTempSelectedUsers(selectedUsers);
     }
 
     return () => {};
@@ -77,7 +80,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
               key={user._id}
             >
               <img
-                src={user?.image || ""}
+                src={user?.image || emptyAvatar}
                 alt={user.name}
                 className="w-10 h-10 rounded-full"
               />

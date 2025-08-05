@@ -7,11 +7,11 @@ import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 import moment from "moment";
 import { addThousandsSeparator } from "../../utils/helper";
-import InfoCard from "../components/Create-Task/InfoCard";
+import InfoCard from "../../components/Create-Task/InfoCard";
 import { LuArrowRight } from "react-icons/lu";
-import TaskListTable from "../components/Create-Task/TaskListTable";
-import CustomPieChart from "../components/Charts/CustomPieChart";
-import CustomBarChart from "../components/Charts/CustomBarChart";
+import TaskListTable from "../../components/Create-Task/TaskListTable";
+import CustomPieChart from "../../components/Charts/CustomPieChart";
+import CustomBarChart from "../../components/Charts/CustomBarChart";
 
 const COLORS = ["#8D51FF", "#00BBDB", "#7BCE00"];
 
