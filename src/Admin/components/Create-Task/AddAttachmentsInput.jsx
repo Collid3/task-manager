@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineTrash, HiPlusSm } from "react-icons/hi";
 import { LuPaperclip } from "react-icons/lu";
 
@@ -16,6 +16,10 @@ const AddAttachmentsInput = ({ attachments, setAttachments }) => {
     const updatedList = attachments.filter((attachment, idx) => index !== idx);
     setAttachments(updatedList);
   };
+
+  useEffect(() => {
+    setOption("");
+  }, [attachments]);
 
   return (
     <div>

@@ -43,8 +43,8 @@ const TodoListInput = ({ todoList, setTodoList }) => {
           onChange={({ target }) => setOption(target.value)}
         />
 
-        <button className="card-btn text-nowrap">
-          <HiPlusSm className="text-lg" onClick={handleAddOption} />
+        <button className="card-btn text-nowrap" onClick={handleAddOption}>
+          <HiPlusSm className="text-lg" />
         </button>
       </div>
     </div>

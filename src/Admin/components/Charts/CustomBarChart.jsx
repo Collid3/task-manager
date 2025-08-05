@@ -26,8 +26,6 @@ const CustomBarChart = ({ data }) => {
     }
   };
 
-  console.log(data);
-
   return (
     <div>
       <ResponsiveContainer width="100%" height={300}>

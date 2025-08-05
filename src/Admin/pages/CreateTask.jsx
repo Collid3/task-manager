@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-import { useUserContext } from "../../context/UserContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LuTrash2 } from "react-icons/lu";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { PRIORITY_DATA } from "../../utils/data";
-import SelectDropDown from "../components/SelectDropDown";
-import SelectUsers from "../components/SelectUsers";
-import TodoListInput from "../components/TodoListInput";
-import AddAttachmentsInput from "../components/AddAttachmentsInput";
+import SelectDropDown from "../components/Create-Task/SelectDropDown";
+import SelectUsers from "../components/Create-Task/SelectUsers";
+import TodoListInput from "../components/Create-Task/TodoListInput";
+import AddAttachmentsInput from "../components/Create-Task/AddAttachmentsInput";
 import api from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import moment from "moment";
+import Modal from "../components/Create-Task/Modal";
+import DeleteAlert from "../components/DeleteAlert";
 
 const CreateTask = () => {
   useUserAuth();
 
-  const { me, navigate } = useUserContext();
-
+  const [currentTask, setCurrentTask] = useState(null);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const [taskData, setTaskData] = useState({
@@ -31,6 +32,7 @@ const CreateTask = () => {
     attachments: [],
   });
 
+  const navigate = useNavigate();
   const location = useLocation();
   const { taskId } = location.state || {};
 
@@ -39,7 +41,7 @@ const CreateTask = () => {
   };
 
   const clearData = () => {
-    setTaskData({
+    setTaskData((prev) => ({
       title: "",
       description: "",
       priority: "Low",
@@ -47,7 +49,7 @@ const CreateTask = () => {
       assignedTo: [],
       todoChecklist: [],
       attachments: [],
-    });
+    }));
   };
 
   const createTask = async () => {
@@ -75,7 +77,35 @@ const CreateTask = () => {
     }
   };
 
-  const updateTask = async () => {};
+  const updateTask = async () => {
+    setLoading(true);
+
+    try {
+      const todoList = taskData.todoChecklist?.map((todo) => {
+        const prevTodoChecklist = currentTask?.todoChecklist || [];
+        const matchedTask = prevTodoChecklist.find(
+          (task) => task.text === todo
+        );
+
+        return {
+          text: todo,
+          completed: matchedTask ? matchedTask.completed : false,
+        };
+      });
+
+      const { data } = await api.put(API_PATHS.TASKS.UPDATE_TASK(taskId), {
+        ...taskData,
+        dueDate: new Date(taskData.dueDate).toISOString,
+        todoChecklist: todoList,
+      });
+
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async () => {
     // input validation
@@ -103,9 +133,54 @@ const CreateTask = () => {
     createTask();
   };
 
-  const getTaskDetailsByID = async () => {};
+  const getTaskDetailsByID = async () => {
+    setLoading(true);
 
-  const deleteTask = async () => {};
+    try {
+      const { data } = await api.get(API_PATHS.TASKS.GET_TASK_BY_ID(taskId));
+      const task = data.task;
+      setCurrentTask(task);
+
+      setTaskData({
+        title: task.title,
+        description: task.description,
+        priority: task.priority,
+        dueDate: task.dueDate
+          ? moment(task.dueDate).format("YYYY-MM-DD")
+          : null,
+        assignedTo: task?.assignedTo?.map((user) => user._id) || [],
+        todoChecklist: task?.todoChecklist?.map((todo) => todo.text) || [],
+        attachments: task?.attachments || [],
+      });
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteTask = async () => {
+    setLoading(true);
+
+    try {
+      const { data } = await api.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      setOpenDeleteAlert(false);
+      toast.success(data.message);
+      navigate("/admin/tasks");
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (taskId) {
+      getTaskDetailsByID();
+    } else clearData();
+
+    return () => {};
+  }, [taskId]);
 
   return (
     <DashboardLayout activeMenu="Create Task">
@@ -120,7 +195,11 @@ const CreateTask = () => {
                   className="flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer"
                   onClick={() => setOpenDeleteAlert(true)}
                 >
-                  <LuTrash2 className="text-base" /> Delete
+                  <LuTrash2
+                    onClick={() => setOpenDeleteAlert(true)}
+                    className="text-base"
+                  />{" "}
+                  Delete
                 </button>
               )}
             </div>
@@ -232,6 +311,17 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={openDeleteAlert}
+        onClose={() => setOpenDeleteAlert(false)}
+        title="Delete Task"
+      >
+        <DeleteAlert
+          content="Are you sure you want to delete this task?"
+          onDelete={deleteTask}
+        />
+      </Modal>
     </DashboardLayout>
   );
 };

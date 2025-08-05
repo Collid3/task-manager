@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import api from "../../utils/axiosInstance";
-import { API_PATHS } from "../../utils/apiPaths";
+import api from "../../../utils/axiosInstance";
+import { API_PATHS } from "../../../utils/apiPaths";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { LuUsers } from "react-icons/lu";
